@@ -27,42 +27,42 @@
           <form>
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="konfuzyonV">
+                <input class="form-check-input" type="checkbox" id="konfuzyonV" onclick="deselectHicBiri()">
                 <label class="form-check-label" for="konfuzyonV">Konfüzyon var mı?</label> 
               </div>
             </div>
 
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="bunDegeri">
+                <input class="form-check-input" type="checkbox" id="bunDegeri" onclick="deselectHicBiri()">
                 <label class="form-check-label" for="bunDegeri">BUN >20 mg/dL veya >7 mmol/L (ya da Üre >42.8 mg/dL)</label>
               </div>
             </div>
 
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="solunumSayisi">
+                <input class="form-check-input" type="checkbox" id="solunumSayisi" onclick="deselectHicBiri()">
                 <label class="form-check-label" for="solunumSayisi">Solunum sayısı ≥30/dk</label>
               </div>
             </div>
 
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="kanBasinci">
+                <input class="form-check-input" type="checkbox" id="kanBasinci" onclick="deselectHicBiri()">
                 <label class="form-check-label" for="kanBasinci">Sistolik kan basıncı <90 mmHg ya da Diastolik kan basıncı ≤60 mmHg</label>
               </div>
             </div>
 
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="yasKac">
+                <input class="form-check-input" type="checkbox" id="yasKac" onclick="deselectHicBiri()">
                 <label class="form-check-label" for="yasKac">Yaş ≥65</label>
               </div>
             </div>
 
             <div class="form-group">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="hicBiri">
+                <input class="form-check-input" type="checkbox" id="hicBiri" onclick="deselectOthers()">
                 <label class="form-check-label" for="hicBiri">Hiçbiri yok</label>
               </div>
             </div>
@@ -150,6 +150,22 @@
         document.getElementById("dusukSkor").style.display = "none";
         document.getElementById("ortaSkor").style.display = "none";
         document.getElementById("yuksekSkor").style.display = "none";
+      }
+
+      function deselectOthers() {
+        // Eğer "Hiçbiri yok" seçiliyse diğer tüm checkbox'ları kaldır
+        if (document.getElementById("hicBiri").checked) {
+          document.getElementById("konfuzyonV").checked = false;
+          document.getElementById("bunDegeri").checked = false;
+          document.getElementById("solunumSayisi").checked = false;
+          document.getElementById("kanBasinci").checked = false;
+          document.getElementById("yasKac").checked = false;
+        }
+      }
+
+      function deselectHicBiri() {
+        // Eğer diğer checkbox'lardan biri seçilirse "Hiçbiri yok" seçimini kaldır
+        document.getElementById("hicBiri").checked = false;
       }
     </script>
 
