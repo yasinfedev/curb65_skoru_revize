@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <style>
+      body {
+        padding: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="jumbotron bg-primary text-center text-white" style="font-weight:bold; font-size:24px;">Pnömoni için CURB-65 Skoru Hesaplayıcı</div>
+    
+    <div class="container">
+      <div class="alert alert-info" role="alert">
+        CURB-65 skorlama sistemi, Pnömoni tanısı alan hastalarda yatış endikasyonu ve yatış şekline (YBÜ/Servis) karar vermek için kullanılan bir skorlama sistemidir.
+      </div>
+      
+      <div class="card">
+        <div class="card-header bg-warning" style="font-weight:bold">Pnömoni için CURB-65 Skoru Hesaplayıcı</div>
+        
+        <div class="card-body" style="color:black;">
+          <form>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="konfuzyonV">
+                <label class="form-check-label" for="konfuzyonV">Konfüzyon var mı?</label> 
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bunDegeri">
+                <label class="form-check-label" for="bunDegeri">BUN >20 mg/dL veya >7 mmol/L (ya da Üre >42.8 mg/dL)</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="solunumSayisi">
+                <label class="form-check-label" for="solunumSayisi">Solunum sayısı ≥30/dk</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="kanBasinci">
+                <label class="form-check-label" for="kanBasinci">Sistolik kan basıncı <90 mmHg ya da Diastolik kan basıncı ≤60 mmHg</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="yasKac">
+                <label class="form-check-label" for="yasKac">Yaş ≥65</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="hicBiri">
+                <label class="form-check-label" for="hicBiri">Hiçbiri yok</label>
+              </div>
+            </div>
+
+            <hr>
+            
+            <div class="text-center">
+              <button class="btn btn-primary" type="button" onclick="skorHesapla()">HESAPLA</button>
+              <button class="btn btn-secondary ml-2" type="button" onclick="temizle()">TEMİZLE</button>
+            </div>
+          </form>
+
+          <hr>
+
+          <b>SKOR:</b>
+
+          <div class="alert alert-success" role="alert" id="dusukSkor" style="display:none"></div>
+          <div class="alert alert-warning" role="alert" id="ortaSkor" style="display:none"></div>
+          <div class="alert alert-danger" role="alert" id="yuksekSkor" style="display:none"></div>
+
+          <hr>
+
+          <div class="alert alert-danger" role="alert">
+            <b>UYARI:</b> Hasta <b>hipoksemik ise</b>, skora bakılmadan yatış düşünülmelidir!
+          </div>
+
+          <div class="alert alert-info" role="alert">
+            <b>0-1 puan:</b> Düşük risk; Ölüm riski = <b>< %3</b><br>
+            <b>2 puan:</b> Orta risk; Ölüm riski = <b>%9</b><br>
+            <b>3-5 puan:</b> Yüksek risk; Ölüm riski = <b>%15-40</b><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function skorHesapla() {
+        var skor = 0;
+        
+        if (document.getElementById("konfuzyonV").checked) {
+          skor += 1;
+        }
+        if (document.getElementById("bunDegeri").checked) {
+          skor += 1;
+        }
+        if (document.getElementById("solunumSayisi").checked) {
+          skor += 1;
+        }
+        if (document.getElementById("kanBasinci").checked) {
+          skor += 1;
+        }
+        if (document.getElementById("yasKac").checked) {
+          skor += 1;
+        }
+        if (document.getElementById("hicBiri").checked) {
+          skor = 0;
+        }
+
+        if (skor < 2) {
+          document.getElementById("dusukSkor").style.display = "block";
+          document.getElementById("ortaSkor").style.display = "none";
+          document.getElementById("yuksekSkor").style.display = "none";
+          document.getElementById("dusukSkor").innerHTML = "Skor: " + skor + " (Düşük Risk)";
+        } else if (skor == 2) {
+          document.getElementById("dusukSkor").style.display = "none";
+          document.getElementById("ortaSkor").style.display = "block";
+          document.getElementById("yuksekSkor").style.display = "none";
+          document.getElementById("ortaSkor").innerHTML = "Skor: " + skor + " (Orta Risk)";
+        } else {
+          document.getElementById("dusukSkor").style.display = "none";
+          document.getElementById("ortaSkor").style.display = "none";
+          document.getElementById("yuksekSkor").style.display = "block";
+          document.getElementById("yuksekSkor").innerHTML = "Skor: " + skor + " (Yüksek Risk)";
+        }
+      }
+
+      function temizle() {
+        document.getElementById("konfuzyonV").checked = false;
+        document.getElementById("bunDegeri").checked = false;
+        document.getElementById("solunumSayisi").checked = false;
+        document.getElementById("kanBasinci").checked = false;
+        document.getElementById("yasKac").checked = false;
+        document.getElementById("hicBiri").checked = false;
+        
+        document.getElementById("dusukSkor").style.display = "none";
+        document.getElementById("ortaSkor").style.display = "none";
+        document.getElementById("yuksekSkor").style.display = "none";
+      }
+    </script>
+
+  </body>
+</html>
